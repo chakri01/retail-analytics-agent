@@ -1,0 +1,593 @@
+2026-01-15 17:34:24,487 - __main__ - INFO - ================================================================================
+2026-01-15 17:34:24,487 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 17:34:24,489 - __main__ - INFO - ================================================================================
+2026-01-15 17:34:24,537 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 17:34:24,599 - __main__ - ERROR - Error creating views: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 17:34:46,704 - __main__ - INFO - ================================================================================
+2026-01-15 17:34:46,704 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 17:34:46,704 - __main__ - INFO - ================================================================================
+2026-01-15 17:34:46,757 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 17:34:46,861 - __main__ - INFO - Executing product_dim_view.sql...
+2026-01-15 17:34:46,864 - __main__ - INFO - Executing inventory_dim_view.sql...
+2026-01-15 17:34:46,870 - __main__ - INFO - 
+================================================================================
+2026-01-15 17:34:46,870 - __main__ - INFO - VIEW VALIDATION
+2026-01-15 17:34:46,871 - __main__ - INFO - ================================================================================
+2026-01-15 17:34:46,871 - __main__ - INFO - 
+[1] sales_fact_view:
+2026-01-15 17:34:46,894 - __main__ - ERROR - Error creating views: (psycopg2.errors.UndefinedTable) relation "sales_fact_view" does not exist
+LINE 1: SELECT COUNT(*) FROM sales_fact_view
+                             ^
+
+[SQL: SELECT COUNT(*) FROM sales_fact_view]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-15 17:49:58,336 - __main__ - INFO - ================================================================================
+2026-01-15 17:49:58,336 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 17:49:58,336 - __main__ - INFO - ================================================================================
+2026-01-15 17:52:41,363 - __main__ - INFO - ================================================================================
+2026-01-15 17:52:41,363 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 17:52:41,363 - __main__ - INFO - ================================================================================
+2026-01-15 17:52:51,708 - __main__ - INFO - ================================================================================
+2026-01-15 17:52:51,708 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 17:52:51,708 - __main__ - INFO - ================================================================================
+2026-01-15 17:52:51,796 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 17:52:51,918 - __main__ - ERROR - Error creating views: (psycopg2.errors.UndefinedColumn) column "sales_channel" does not exist
+LINE 25:     sales_channel,
+             ^
+
+[SQL: -- ============================================================================
+-- SALES FACT VIEW
+-- Unified sales data from Amazon and International channels
+-- Grain: One row = one sold SKU in an order
+-- ============================================================================
+
+CREATE OR REPLACE VIEW sales_fact_view AS
+
+-- Amazon Sales (domestic)
+SELECT 
+    order_id,
+    date AS order_date,
+    sku,
+    category,
+    size,
+    style,
+    qty,
+    amount,
+    'Amazon' AS channel,
+    ship_country AS country,
+    ship_state AS state,
+    ship_city AS city,
+    currency,
+    fulfilment,
+    sales_channel,
+    b2b,
+    
+    -- Derived time dimensions
+    EXTRACT(YEAR FROM date) AS year,
+    EXTRACT(MONTH FROM date) AS month,
+    EXTRACT(QUARTER FROM date) AS quarter,
+    to_char(date,'Month') AS month_name
+    
+FROM amazon_sales_raw
+
+WHERE 1=1
+    -- CRITICAL: Exclude cancelled orders
+    AND LOWER(status) NOT LIKE '%%cancelled%%'
+    -- Data quality filters
+    AND date IS NOT NULL
+    AND sku IS NOT NULL
+    AND sku != ''
+    AND amount IS NOT NULL
+
+UNION ALL
+
+-- International Sales
+SELECT 
+    NULL AS order_id,  -- International data doesn't have order IDs
+    date AS order_date,
+    sku,
+    NULL AS category,  -- Will be enriched from product_dim later
+    size,
+    style,
+    pcs AS qty,
+    gross_amt AS amount,
+    'International' AS channel,
+    NULL AS country,  -- International data doesn't have country breakdown
+    NULL AS state,
+    NULL AS city,
+    NULL AS currency,  -- Assuming standard currency for international
+    NULL AS fulfilment,
+    customer AS sales_channel,  -- Using customer as sales channel proxy
+    NULL AS b2b,
+    
+    -- Derived time dimensions
+    EXTRACT(YEAR FROM date) AS year,
+    EXTRACT(MONTH FROM date) AS month,
+    EXTRACT(QUARTER FROM date) AS quarter,
+    to_char(date,'Month') AS month_name
+    
+FROM international_sales_raw
+
+WHERE 1=1
+    -- Data quality filters
+    AND date IS NOT NULL
+    AND sku IS NOT NULL
+    AND sku != ''
+    AND gross_amt IS NOT NULL
+    AND pcs IS NOT NULL;
+
+-- ============================================================================
+-- VALIDATION QUERIES (run after view creation)
+-- ============================================================================
+
+-- Total rows should be less than sum of raw tables (due to cancelled filter)
+-- SELECT COUNT(*) as total_rows FROM sales_fact_view;
+
+-- Check no cancelled orders leaked through
+-- SELECT COUNT(*) FROM sales_fact_view WHERE channel = 'Amazon' 
+--   AND order_id IN (SELECT order_id FROM amazon_sales_raw WHERE LOWER(status) LIKE '%%cancelled%%');
+
+-- Date range check
+-- SELECT MIN(order_date) as earliest_date, MAX(order_date) as latest_date FROM sales_fact_view;
+
+-- Channel breakdown
+-- SELECT channel, COUNT(*) as row_count, SUM(amount) as total_sales FROM sales_fact_view GROUP BY channel;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-15 17:57:03,771 - __main__ - INFO - ================================================================================
+2026-01-15 17:57:03,771 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 17:57:03,771 - __main__ - INFO - ================================================================================
+2026-01-15 17:57:03,825 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 17:57:04,063 - __main__ - ERROR - Error creating views: (psycopg2.errors.SyntaxError) syntax error at or near "["
+LINE 25:     [Sales Channel],
+             ^
+
+[SQL: -- ============================================================================
+-- SALES FACT VIEW
+-- Unified sales data from Amazon and International channels
+-- Grain: One row = one sold SKU in an order
+-- ============================================================================
+
+CREATE OR REPLACE VIEW sales_fact_view AS
+
+-- Amazon Sales (domestic)
+SELECT 
+    order_id,
+    date AS order_date,
+    sku,
+    category,
+    size,
+    style,
+    qty,
+    amount,
+    'Amazon' AS channel,
+    ship_country AS country,
+    ship_state AS state,
+    ship_city AS city,
+    currency,
+    fulfilment,
+    [Sales Channel],
+    b2b,
+    
+    -- Derived time dimensions
+    EXTRACT(YEAR FROM date) AS year,
+    EXTRACT(MONTH FROM date) AS month,
+    EXTRACT(QUARTER FROM date) AS quarter,
+    to_char(date,'Month') AS month_name
+    
+FROM amazon_sales_raw
+
+WHERE 1=1
+    -- CRITICAL: Exclude cancelled orders
+    AND LOWER(status) NOT LIKE '%%cancelled%%'
+    -- Data quality filters
+    AND date IS NOT NULL
+    AND sku IS NOT NULL
+    AND sku != ''
+    AND amount IS NOT NULL
+
+UNION ALL
+
+-- International Sales
+SELECT 
+    NULL AS order_id,  -- International data doesn't have order IDs
+    date AS order_date,
+    sku,
+    NULL AS category,  -- Will be enriched from product_dim later
+    size,
+    style,
+    pcs AS qty,
+    gross_amt AS amount,
+    'International' AS channel,
+    NULL AS country,  -- International data doesn't have country breakdown
+    NULL AS state,
+    NULL AS city,
+    NULL AS currency,  -- Assuming standard currency for international
+    NULL AS fulfilment,
+    customer AS [Sales Channel],  -- Using customer as sales channel proxy
+    NULL AS b2b,
+    
+    -- Derived time dimensions
+    EXTRACT(YEAR FROM date) AS year,
+    EXTRACT(MONTH FROM date) AS month,
+    EXTRACT(QUARTER FROM date) AS quarter,
+    to_char(date,'Month') AS month_name
+    
+FROM international_sales_raw
+
+WHERE 1=1
+    -- Data quality filters
+    AND date IS NOT NULL
+    AND sku IS NOT NULL
+    AND sku != ''
+    AND gross_amt IS NOT NULL
+    AND pcs IS NOT NULL;
+
+-- ============================================================================
+-- VALIDATION QUERIES (run after view creation)
+-- ============================================================================
+
+-- Total rows should be less than sum of raw tables (due to cancelled filter)
+-- SELECT COUNT(*) as total_rows FROM sales_fact_view;
+
+-- Check no cancelled orders leaked through
+-- SELECT COUNT(*) FROM sales_fact_view WHERE channel = 'Amazon' 
+--   AND order_id IN (SELECT order_id FROM amazon_sales_raw WHERE LOWER(status) LIKE '%%cancelled%%');
+
+-- Date range check
+-- SELECT MIN(order_date) as earliest_date, MAX(order_date) as latest_date FROM sales_fact_view;
+
+-- Channel breakdown
+-- SELECT channel, COUNT(*) as row_count, SUM(amount) as total_sales FROM sales_fact_view GROUP BY channel;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-15 18:09:26,515 - __main__ - INFO - ================================================================================
+2026-01-15 18:09:26,515 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 18:09:26,524 - __main__ - INFO - ================================================================================
+2026-01-15 18:09:26,582 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 18:09:26,691 - __main__ - ERROR - Error creating views: (psycopg2.errors.UndefinedColumn) column "sales_channel" does not exist
+LINE 25:     sales_channel,
+             ^
+
+[SQL: -- ============================================================================
+-- SALES FACT VIEW
+-- Unified sales data from Amazon and International channels
+-- Grain: One row = one sold SKU in an order
+-- ============================================================================
+
+CREATE OR REPLACE VIEW sales_fact_view AS
+
+-- Amazon Sales (domestic)
+SELECT 
+    order_id,
+    date AS order_date,
+    sku,
+    category,
+    size,
+    style,
+    qty,
+    amount,
+    'Amazon' AS channel,
+    ship_country AS country,
+    ship_state AS state,
+    ship_city AS city,
+    currency,
+    fulfilment,
+    sales_channel,
+    b2b,
+    
+    -- Derived time dimensions
+    EXTRACT(YEAR FROM date) AS year,
+    EXTRACT(MONTH FROM date) AS month,
+    EXTRACT(QUARTER FROM date) AS quarter,
+    to_char(date,'Month') AS month_name
+    
+FROM amazon_sales_raw
+
+WHERE 1=1
+    -- CRITICAL: Exclude cancelled orders
+    AND LOWER(status) NOT LIKE '%%cancelled%%'
+    -- Data quality filters
+    AND date IS NOT NULL
+    AND sku IS NOT NULL
+    AND sku != ''
+    AND amount IS NOT NULL
+
+UNION ALL
+
+-- International Sales
+SELECT 
+    NULL AS order_id,  -- International data doesn't have order IDs
+    date AS order_date,
+    sku,
+    NULL AS category,  -- Will be enriched from product_dim later
+    size,
+    style,
+    pcs AS qty,
+    gross_amt AS amount,
+    'International' AS channel,
+    NULL AS country,  -- International data doesn't have country breakdown
+    NULL AS state,
+    NULL AS city,
+    NULL AS currency,  -- Assuming standard currency for international
+    NULL AS fulfilment,
+    customer AS sales_channel,  -- Using customer as sales channel proxy
+    NULL AS b2b,
+    
+    -- Derived time dimensions
+    EXTRACT(YEAR FROM date) AS year,
+    EXTRACT(MONTH FROM date) AS month,
+    EXTRACT(QUARTER FROM date) AS quarter,
+    to_char(date,'Month') AS month_name
+    
+FROM international_sales_raw
+
+WHERE 1=1
+    -- Data quality filters
+    AND date IS NOT NULL
+    AND sku IS NOT NULL
+    AND sku != ''
+    AND gross_amt IS NOT NULL
+    AND pcs IS NOT NULL;
+
+-- ============================================================================
+-- VALIDATION QUERIES (run after view creation)
+-- ============================================================================
+
+-- Total rows should be less than sum of raw tables (due to cancelled filter)
+-- SELECT COUNT(*) as total_rows FROM sales_fact_view;
+
+-- Check no cancelled orders leaked through
+-- SELECT COUNT(*) FROM sales_fact_view WHERE channel = 'Amazon' 
+--   AND order_id IN (SELECT order_id FROM amazon_sales_raw WHERE LOWER(status) LIKE '%%cancelled%%');
+
+-- Date range check
+-- SELECT MIN(order_date) as earliest_date, MAX(order_date) as latest_date FROM sales_fact_view;
+
+-- Channel breakdown
+-- SELECT channel, COUNT(*) as row_count, SUM(amount) as total_sales FROM sales_fact_view GROUP BY channel;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-15 18:35:02,857 - __main__ - INFO - ================================================================================
+2026-01-15 18:35:02,857 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 18:35:02,857 - __main__ - INFO - ================================================================================
+2026-01-15 18:35:02,918 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 18:35:03,037 - __main__ - INFO - [OK] sales_fact_view.sql executed successfully
+2026-01-15 18:35:03,037 - __main__ - INFO - Executing product_dim_view.sql...
+2026-01-15 18:35:03,055 - __main__ - ERROR - Error creating views: (psycopg2.errors.UndefinedColumn) column "sku" does not exist
+LINE 41:         sku,
+                 ^
+
+[SQL: -- ============================================================================
+-- PRODUCT DIMENSION VIEW
+-- One row per unique SKU with product attributes
+-- Grain: One row = one SKU
+-- ============================================================================
+
+CREATE OR REPLACE VIEW product_dim_view AS
+
+WITH amazon_products AS (
+    -- Extract distinct products from Amazon sales
+    SELECT DISTINCT
+        sku,
+        category,
+        size,
+        style,
+        asin,
+        'Amazon' AS source
+    FROM amazon_sales_raw
+    WHERE sku IS NOT NULL 
+      AND sku != ''
+),
+
+international_products AS (
+    -- Extract distinct products from International sales
+    SELECT DISTINCT
+        sku,
+        NULL AS category,  -- International data lacks category
+        size,
+        style,
+        NULL AS asin,
+        'International' AS source
+    FROM international_sales_raw
+    WHERE sku IS NOT NULL 
+      AND sku != ''
+),
+
+inventory_products AS (
+    -- Extract distinct products from Inventory
+    -- Note: Column names will be determined at runtime based on actual inventory structure
+    SELECT DISTINCT
+        sku,
+        category,
+        size,
+        NULL AS style,
+        NULL AS asin,
+        'Inventory' AS source
+    FROM inventory_raw
+    WHERE sku IS NOT NULL 
+      AND sku != ''
+),
+
+all_products AS (
+    -- Combine all product sources
+    SELECT * FROM amazon_products
+    UNION ALL
+    SELECT * FROM international_products
+    UNION ALL
+    SELECT * FROM inventory_products
+),
+
+-- Resolve conflicts using precedence: Inventory > Amazon > International
+product_master AS (
+    SELECT 
+        sku,
+        -- Take first non-null value with precedence
+        COALESCE(
+            MAX(CASE WHEN source = 'Inventory' THEN category END),
+            MAX(CASE WHEN source = 'Amazon' THEN category END),
+            MAX(CASE WHEN source = 'International' THEN category END)
+        ) AS category,
+        
+        COALESCE(
+            MAX(CASE WHEN source = 'Inventory' THEN size END),
+            MAX(CASE WHEN source = 'Amazon' THEN size END),
+            MAX(CASE WHEN source = 'International' THEN size END)
+        ) AS size,
+        
+        COALESCE(
+            MAX(CASE WHEN source = 'Inventory' THEN style END),
+            MAX(CASE WHEN source = 'Amazon' THEN style END),
+            MAX(CASE WHEN source = 'International' THEN style END)
+        ) AS style,
+        
+        MAX(CASE WHEN source = 'Amazon' THEN asin END) AS asin,
+        
+        -- Track which sources contributed
+        STRING_AGG(DISTINCT source, ', ' ORDER BY source) AS data_sources
+        
+    FROM all_products
+    GROUP BY sku
+)
+
+SELECT 
+    sku,
+    category,
+    size,
+    style,
+    asin,
+    data_sources,
+    -- Derived attributes
+    UPPER(TRIM(category)) AS category_clean,
+    CASE 
+        WHEN UPPER(size) IN ('XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '2XL', '3XL', '4XL', '5XL') 
+        THEN 'Clothing'
+        ELSE 'Other'
+    END AS product_type
+FROM product_master;
+
+-- ============================================================================
+-- VALIDATION QUERIES
+-- ============================================================================
+
+-- Total unique SKUs
+-- SELECT COUNT(*) as unique_skus FROM product_dim_view;
+
+-- SKUs by data source
+-- SELECT data_sources, COUNT(*) as sku_count FROM product_dim_view GROUP BY data_sources;
+
+-- Category breakdown
+-- SELECT category, COUNT(*) as sku_count FROM product_dim_view GROUP BY category ORDER BY sku_count DESC;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-15 18:43:08,122 - __main__ - INFO - ================================================================================
+2026-01-15 18:43:08,124 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 18:43:08,124 - __main__ - INFO - ================================================================================
+2026-01-15 18:43:08,186 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 18:43:08,304 - __main__ - INFO - [OK] sales_fact_view.sql executed successfully
+2026-01-15 18:43:08,304 - __main__ - INFO - Executing product_dim_view.sql...
+2026-01-15 18:43:08,355 - __main__ - INFO - [OK] product_dim_view.sql executed successfully
+2026-01-15 18:43:08,355 - __main__ - INFO - Executing inventory_dim_view.sql...
+2026-01-15 18:43:08,355 - __main__ - ERROR - Error creating views: (psycopg2.errors.UndefinedColumn) column "sku" does not exist
+LINE 10:     sku,
+             ^
+
+[SQL: -- ============================================================================
+-- INVENTORY DIMENSION VIEW
+-- Clean inventory snapshot with stock levels
+-- Grain: One row = one SKU's inventory status
+-- ============================================================================
+
+CREATE OR REPLACE VIEW inventory_dim_view AS
+
+SELECT 
+    sku,
+    category,
+    size,
+    stock,
+    
+    -- Derived metrics
+    CASE 
+        WHEN stock = 0 THEN 'Out of Stock'
+        WHEN stock < 10 THEN 'Low Stock'
+        WHEN stock < 50 THEN 'Medium Stock'
+        ELSE 'High Stock'
+    END AS stock_status,
+    
+    CASE 
+        WHEN stock = 0 THEN 1
+        ELSE 0
+    END AS is_out_of_stock,
+    
+    -- Clean category
+    UPPER(TRIM(category)) AS category_clean
+
+FROM inventory_raw
+
+WHERE 1=1
+    -- Data quality filters
+    AND sku IS NOT NULL
+    AND sku != '';
+
+-- ============================================================================
+-- VALIDATION QUERIES
+-- ============================================================================
+
+-- Total SKUs in inventory
+-- SELECT COUNT(*) as total_skus FROM inventory_dim_view;
+
+-- Stock status distribution
+-- SELECT stock_status, COUNT(*) as sku_count, SUM(stock) as total_units 
+-- FROM inventory_dim_view GROUP BY stock_status ORDER BY sku_count DESC;
+
+-- Out of stock items
+-- SELECT COUNT(*) as out_of_stock_count FROM inventory_dim_view WHERE is_out_of_stock = 1;
+
+-- Top categories by inventory
+-- SELECT category, COUNT(*) as sku_count, SUM(stock) as total_stock 
+-- FROM inventory_dim_view GROUP BY category ORDER BY total_stock DESC LIMIT 10;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-01-15 18:45:42,880 - __main__ - INFO - ================================================================================
+2026-01-15 18:45:42,897 - __main__ - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 18:45:42,897 - __main__ - INFO - ================================================================================
+2026-01-15 18:45:42,944 - __main__ - INFO - Executing sales_fact_view.sql...
+2026-01-15 18:45:43,081 - __main__ - INFO - [OK] sales_fact_view.sql executed successfully
+2026-01-15 18:45:43,081 - __main__ - INFO - Executing product_dim_view.sql...
+2026-01-15 18:45:43,092 - __main__ - INFO - [OK] product_dim_view.sql executed successfully
+2026-01-15 18:45:43,093 - __main__ - INFO - Executing inventory_dim_view.sql...
+2026-01-15 18:45:43,112 - __main__ - INFO - [OK] inventory_dim_view.sql executed successfully
+2026-01-15 18:45:43,112 - __main__ - INFO - 
+================================================================================
+2026-01-15 18:45:43,120 - __main__ - INFO - VIEW VALIDATION
+2026-01-15 18:45:43,122 - __main__ - INFO - ================================================================================
+2026-01-15 18:45:43,124 - __main__ - INFO - 
+[1] sales_fact_view:
+2026-01-15 18:45:43,365 - __main__ - INFO -   Total rows: 127,632
+2026-01-15 18:45:43,620 - __main__ - INFO - 
+      channel  row_count  total_sales
+       Amazon     110414   71673394.0
+International      17218   14349670.0
+2026-01-15 18:45:43,856 - __main__ - INFO - 
+  Date range: 2021-06-05 00:00:00 to 2022-06-29 00:00:00
+2026-01-15 18:45:43,856 - __main__ - INFO - 
+[2] product_dim_view:
+2026-01-15 18:45:44,112 - __main__ - INFO -   Unique SKUs: 9,850
+2026-01-15 18:45:44,414 - __main__ - INFO - 
+                    data_sources  sku_count
+                          Amazon        572
+           Amazon, International          6
+Amazon, International, Inventory       3693
+               Amazon, Inventory       2924
+                   International        102
+        International, Inventory        797
+                       Inventory       1756
+2026-01-15 18:45:44,414 - __main__ - INFO - 
+[3] inventory_dim_view:
+2026-01-15 18:45:44,414 - __main__ - INFO -   Inventory SKUs: 9,188
+2026-01-15 18:45:44,426 - __main__ - INFO - 
+stock_status  sku_count  total_units
+Out of Stock        551          0.0
+   Low Stock       4399      16731.0
+Medium Stock       2885      74107.0
+  High Stock       1353     151532.0
+2026-01-15 18:45:44,430 - __main__ - INFO - 
+================================================================================
+2026-01-15 18:45:44,435 - __main__ - INFO - ================================================================================

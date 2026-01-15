@@ -1,0 +1,176 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "sales_fact_view",
+      "dataset_name": "Sales Fact",
+      "dataset_type": "view",
+      "description": "Unified sales transactions from Amazon and International channels. Core fact table for revenue analysis.",
+      "source_tables": ["amazon_sales_raw", "international_sales_raw"],
+      "grain": "One row = one SKU sold in an order/transaction",
+      "row_count_approx": 145000,
+      "metrics_available": [
+        "sales_amount",
+        "units_sold",
+        "avg_order_value",
+        "order_count"
+      ],
+      "dimensions_available": [
+        "order_id",
+        "order_date",
+        "sku",
+        "category",
+        "size",
+        "style",
+        "channel",
+        "country",
+        "state",
+        "city",
+        "year",
+        "month",
+        "quarter",
+        "month_name"
+      ],
+      "primary_key": null,
+      "foreign_keys": [
+        {"column": "sku", "references": "product_dim_view.sku"}
+      ],
+      "filters_applied": [
+        "Excludes cancelled orders (status != 'Cancelled')",
+        "Requires non-null: order_date, sku, amount"
+      ],
+      "last_updated": "2025-01-14",
+      "refresh_frequency": "On-demand",
+      "data_quality_rules": [
+        "No cancelled orders",
+        "No null dates",
+        "No null or empty SKUs",
+        "No null amounts"
+      ],
+      "notes": "International channel lacks order_id and country details. Use channel dimension to separate analysis."
+    },
+    {
+      "dataset_id": "product_dim_view",
+      "dataset_name": "Product Dimension",
+      "dataset_type": "view",
+      "description": "Master product catalog with attributes for each SKU. One row per unique product.",
+      "source_tables": ["amazon_sales_raw", "international_sales_raw", "inventory_raw"],
+      "grain": "One row = one unique SKU",
+      "row_count_approx": 3500,
+      "metrics_available": [],
+      "dimensions_available": [
+        "sku",
+        "category",
+        "size",
+        "style",
+        "asin",
+        "data_sources",
+        "category_clean",
+        "product_type"
+      ],
+      "primary_key": "sku",
+      "foreign_keys": [],
+      "conflict_resolution": "Inventory > Amazon > International (in order of precedence)",
+      "last_updated": "2025-01-14",
+      "refresh_frequency": "On-demand",
+      "data_quality_rules": [
+        "One row per SKU",
+        "No null SKUs"
+      ],
+      "notes": "Product attributes are consolidated from multiple sources. 'data_sources' column indicates which systems contributed data for each SKU."
+    },
+    {
+      "dataset_id": "inventory_dim_view",
+      "dataset_name": "Inventory Dimension",
+      "dataset_type": "view",
+      "description": "Current inventory snapshot showing stock levels by SKU. Point-in-time data, not historical.",
+      "source_tables": ["inventory_raw"],
+      "grain": "One row = one SKU's inventory status",
+      "row_count_approx": 1200,
+      "metrics_available": [
+        "stock_level",
+        "out_of_stock_count"
+      ],
+      "dimensions_available": [
+        "sku",
+        "category",
+        "size",
+        "stock",
+        "stock_status",
+        "is_out_of_stock",
+        "category_clean"
+      ],
+      "primary_key": "sku",
+      "foreign_keys": [],
+      "last_updated": "2025-01-14",
+      "refresh_frequency": "On-demand",
+      "data_quality_rules": [
+        "No null SKUs",
+        "Stock must be >= 0"
+      ],
+      "notes": "Stock status categories: Out of Stock (0), Low Stock (<10), Medium Stock (<50), High Stock (>=50)"
+    }
+  ],
+  "raw_tables": [
+    {
+      "dataset_id": "amazon_sales_raw",
+      "dataset_name": "Amazon Sales Raw",
+      "dataset_type": "table",
+      "description": "Raw Amazon sales data. Contains all orders including cancelled.",
+      "source_file": "amazon_sale_report.csv",
+      "row_count_approx": 129000,
+      "last_loaded": "2025-01-14",
+      "notes": "Not for direct analysis. Use sales_fact_view instead."
+    },
+    {
+      "dataset_id": "international_sales_raw",
+      "dataset_name": "International Sales Raw",
+      "dataset_type": "table",
+      "description": "Raw international sales data",
+      "source_file": "international_sale_report.csv",
+      "row_count_approx": 18500,
+      "last_loaded": "2025-01-14",
+      "notes": "Not for direct analysis. Use sales_fact_view instead."
+    },
+    {
+      "dataset_id": "inventory_raw",
+      "dataset_name": "Inventory Raw",
+      "dataset_type": "table",
+      "description": "Raw inventory snapshot",
+      "source_file": "sale_report_inventory.csv",
+      "row_count_approx": 1200,
+      "last_loaded": "2025-01-14",
+      "notes": "Not for direct analysis. Use inventory_dim_view instead."
+    },
+    {
+      "dataset_id": "pricing_may_2022_raw",
+      "dataset_name": "Pricing May 2022 Raw",
+      "dataset_type": "table",
+      "description": "Product pricing snapshot from May 2022",
+      "source_file": "pricing_may_2022.csv",
+      "last_loaded": "2025-01-14",
+      "notes": "Reference table. Not currently integrated into analytical views."
+    },
+    {
+      "dataset_id": "pricing_pl_march_2021_raw",
+      "dataset_name": "Pricing P&L March 2021 Raw",
+      "dataset_type": "table",
+      "description": "Product pricing and P&L snapshot from March 2021",
+      "source_file": "pricing_pl_march_2021.csv",
+      "last_loaded": "2025-01-14",
+      "notes": "Reference table. Not currently integrated into analytical views."
+    }
+  ],
+  "metadata": {
+    "database": "retail.duckdb",
+    "database_location": "db/retail.duckdb",
+    "total_views": 3,
+    "total_raw_tables": 5,
+    "last_refresh": "2025-01-14",
+    "governance_notes": [
+      "Always use views for analysis, never raw tables",
+      "Raw tables are preserved for audit and reprocessing",
+      "Cancelled orders are explicitly excluded in views",
+      "Metric definitions in metric_dictionary.json are the source of truth"
+    ]
+  }
+}

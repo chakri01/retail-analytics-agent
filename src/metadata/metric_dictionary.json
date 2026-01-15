@@ -1,0 +1,144 @@
+{
+  "metrics": [
+    {
+      "metric_id": "sales_amount",
+      "display_name": "Sales Amount",
+      "definition": "Total revenue generated from sales transactions",
+      "source_column": "amount",
+      "source_view": "sales_fact_view",
+      "data_type": "DOUBLE",
+      "allowed_aggregations": ["SUM", "AVG", "MIN", "MAX"],
+      "default_aggregation": "SUM",
+      "allowed_grain": ["order_id", "sku", "category", "channel", "country", "state", "city", "year", "month", "quarter"],
+      "units": "currency",
+      "notes": "Excludes cancelled orders. Includes both Amazon and International sales."
+    },
+    {
+      "metric_id": "units_sold",
+      "display_name": "Units Sold",
+      "definition": "Total quantity of items sold",
+      "source_column": "qty",
+      "source_view": "sales_fact_view",
+      "data_type": "INTEGER",
+      "allowed_aggregations": ["SUM", "AVG", "MIN", "MAX"],
+      "default_aggregation": "SUM",
+      "allowed_grain": ["order_id", "sku", "category", "channel", "country", "state", "city", "year", "month", "quarter"],
+      "units": "units",
+      "notes": "Physical count of items. Uses 'qty' from Amazon sales and 'pcs' from International sales."
+    },
+    {
+      "metric_id": "avg_order_value",
+      "display_name": "Average Order Value",
+      "definition": "Average revenue per order",
+      "source_column": "amount",
+      "source_view": "sales_fact_view",
+      "data_type": "DOUBLE",
+      "calculation": "SUM(amount) / COUNT(DISTINCT order_id)",
+      "allowed_aggregations": ["AVG"],
+      "default_aggregation": "AVG",
+      "allowed_grain": ["channel", "country", "category", "year", "month", "quarter"],
+      "units": "currency",
+      "notes": "Only applicable to Amazon sales channel (International lacks order_id). Derived metric."
+    },
+    {
+      "metric_id": "order_count",
+      "display_name": "Order Count",
+      "definition": "Total number of unique orders",
+      "source_column": "order_id",
+      "source_view": "sales_fact_view",
+      "data_type": "INTEGER",
+      "calculation": "COUNT(DISTINCT order_id)",
+      "allowed_aggregations": ["COUNT"],
+      "default_aggregation": "COUNT",
+      "allowed_grain": ["channel", "country", "category", "year", "month", "quarter"],
+      "units": "orders",
+      "notes": "Only available for Amazon channel. International sales don't have order IDs."
+    },
+    {
+      "metric_id": "stock_level",
+      "display_name": "Stock Level",
+      "definition": "Current inventory units available",
+      "source_column": "stock",
+      "source_view": "inventory_dim_view",
+      "data_type": "INTEGER",
+      "allowed_aggregations": ["SUM", "AVG", "MIN", "MAX"],
+      "default_aggregation": "SUM",
+      "allowed_grain": ["sku", "category", "size", "stock_status"],
+      "units": "units",
+      "notes": "Point-in-time snapshot. Not time-series data."
+    },
+    {
+      "metric_id": "out_of_stock_count",
+      "display_name": "Out of Stock Items",
+      "definition": "Count of SKUs with zero stock",
+      "source_column": "is_out_of_stock",
+      "source_view": "inventory_dim_view",
+      "data_type": "INTEGER",
+      "calculation": "SUM(is_out_of_stock)",
+      "allowed_aggregations": ["SUM"],
+      "default_aggregation": "SUM",
+      "allowed_grain": ["category", "size"],
+      "units": "SKUs",
+      "notes": "Binary flag: 1 if stock = 0, else 0"
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension_id": "sku",
+      "display_name": "SKU",
+      "description": "Stock Keeping Unit - unique product identifier",
+      "source_view": ["sales_fact_view", "product_dim_view", "inventory_dim_view"],
+      "data_type": "VARCHAR",
+      "is_primary_key": true
+    },
+    {
+      "dimension_id": "category",
+      "display_name": "Product Category",
+      "description": "Product classification (e.g., kurta, Set, Western Dress)",
+      "source_view": ["sales_fact_view", "product_dim_view", "inventory_dim_view"],
+      "data_type": "VARCHAR",
+      "common_values": ["kurta", "Set", "Western Dress", "Top", "Blouse"]
+    },
+    {
+      "dimension_id": "channel",
+      "display_name": "Sales Channel",
+      "description": "Sales platform (Amazon or International)",
+      "source_view": ["sales_fact_view"],
+      "data_type": "VARCHAR",
+      "allowed_values": ["Amazon", "International"]
+    },
+    {
+      "dimension_id": "country",
+      "display_name": "Country",
+      "description": "Shipping country (available for Amazon only)",
+      "source_view": ["sales_fact_view"],
+      "data_type": "VARCHAR",
+      "notes": "Primarily 'IN' for India. International channel lacks country detail."
+    },
+    {
+      "dimension_id": "time",
+      "display_name": "Time Dimensions",
+      "description": "Time-based dimensions for temporal analysis",
+      "attributes": [
+        {"name": "order_date", "type": "DATE"},
+        {"name": "year", "type": "INTEGER"},
+        {"name": "month", "type": "INTEGER"},
+        {"name": "quarter", "type": "INTEGER"},
+        {"name": "month_name", "type": "VARCHAR"}
+      ]
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2025-01-14",
+    "data_coverage": {
+      "start_date": "2021-03-01",
+      "end_date": "2022-05-31",
+      "note": "Approximate range based on available data"
+    },
+    "excluded_data": [
+      "Cancelled orders from Amazon sales",
+      "Rows with null SKU or amount"
+    ]
+  }
+}

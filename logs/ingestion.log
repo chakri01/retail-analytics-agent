@@ -1,0 +1,701 @@
+2026-01-14 18:16:30,352 - __main__ - INFO - ================================================================================
+2026-01-14 18:16:30,352 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-14 18:16:30,352 - __main__ - INFO - ================================================================================
+2026-01-14 18:16:30,352 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-14 18:16:30,356 - __main__ - ERROR - Missing required files in data/raw/: ['Amazon sale report.csv', 'International sale report.csv']
+2026-01-14 18:16:30,372 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-14 18:21:13,506 - __main__ - INFO - ================================================================================
+2026-01-14 18:21:13,535 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-14 18:21:13,537 - __main__ - INFO - ================================================================================
+2026-01-14 18:21:13,537 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-14 18:21:13,539 - __main__ - ERROR - Missing required files in data/raw/: ['Amazon sale report.csv', 'International sale report.csv']
+2026-01-14 18:21:13,553 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-14 18:22:53,167 - __main__ - INFO - ================================================================================
+2026-01-14 18:22:53,176 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-14 18:22:53,180 - __main__ - INFO - ================================================================================
+2026-01-14 18:22:53,181 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-14 18:22:53,206 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-14 18:22:53,207 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-14 18:22:53,207 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-14 18:22:53,209 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-14 18:22:53,211 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-14 18:22:53,211 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-14 18:22:53,263 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-14 18:29:22,191 - __main__ - INFO - ================================================================================
+2026-01-14 18:29:22,191 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-14 18:29:22,191 - __main__ - INFO - ================================================================================
+2026-01-14 18:29:22,193 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-14 18:29:22,203 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-14 18:29:22,203 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-14 18:29:22,203 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-14 18:29:22,205 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-14 18:29:22,207 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-14 18:29:22,212 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-14 18:29:22,248 - ingestion.load_amazon_sales - INFO - Dropping existing amazon_sales_raw table if exists
+2026-01-14 18:29:22,510 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: Binder Error: Referenced column "Sales Channel " not found in FROM clause!
+Candidate bindings: "Sales Channel", "Style", "Status", "Date", "Size"
+
+LINE 9:             "Sales Channel " as sales_channel,
+                    ^
+2026-01-14 18:29:22,627 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-14 18:30:16,434 - __main__ - INFO - ================================================================================
+2026-01-14 18:30:16,434 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-14 18:30:16,434 - __main__ - INFO - ================================================================================
+2026-01-14 18:30:16,434 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-14 18:30:16,451 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-14 18:30:16,451 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-14 18:30:16,451 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-14 18:30:16,451 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-14 18:30:16,455 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-14 18:30:16,455 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-14 18:30:16,494 - ingestion.load_amazon_sales - INFO - Dropping existing amazon_sales_raw table if exists
+2026-01-14 18:30:17,849 - ingestion.load_amazon_sales - INFO - Data Quality Check:
+2026-01-14 18:30:17,849 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-14 18:30:17,849 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-14 18:30:17,852 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-14 18:30:17,854 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-14 18:30:17,859 - ingestion.run_all_ingestion - INFO - 
+[2/4] Loading International Sales...
+2026-01-14 18:30:17,859 - ingestion.load_international_sales - INFO - Loading International sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\international_sale_report.csv
+2026-01-14 18:30:17,891 - ingestion.load_international_sales - INFO - Dropping existing international_sales_raw table if exists
+2026-01-14 18:30:18,059 - ingestion.load_international_sales - INFO - Data Quality Check:
+2026-01-14 18:30:18,059 - ingestion.load_international_sales - INFO -   - Null dates: 29633
+2026-01-14 18:30:18,059 - ingestion.load_international_sales - INFO -   - Null/empty SKUs: 2474
+2026-01-14 18:30:18,059 - ingestion.load_international_sales - INFO -   - Null PCS: 1041
+2026-01-14 18:30:18,072 - ingestion.load_international_sales - INFO -   - Null gross amounts: 1041
+2026-01-14 18:30:18,158 - ingestion.run_all_ingestion - INFO - 
+[3/4] Loading Inventory...
+2026-01-14 18:30:18,158 - ingestion.load_inventory - INFO - Loading Inventory data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\sale_report_inventory.csv
+2026-01-14 18:30:18,207 - ingestion.load_inventory - INFO - Dropping existing inventory_raw table if exists
+2026-01-14 18:30:30,030 - ingestion.load_inventory - INFO - Sample columns from inventory CSV: ['index', 'SKU Code', 'Design No.', 'Stock', 'Category', 'Size', 'Color']
+2026-01-14 18:30:30,113 - ingestion.load_inventory - INFO - Inventory table columns: ['index', 'SKU Code', 'Design No.', 'Stock', 'Category', 'Size', 'Color']
+2026-01-14 18:30:30,127 - ingestion.load_inventory - INFO - Data Quality Check:
+2026-01-14 18:30:30,128 - ingestion.load_inventory - INFO -   - Null/empty SKUs: 83
+2026-01-14 18:30:30,133 - ingestion.load_inventory - INFO -   - Unique SKUs: 9170
+2026-01-14 18:30:30,134 - ingestion.load_inventory - WARNING -   - SKUs are NOT unique (duplicates found)
+2026-01-14 18:30:30,184 - ingestion.run_all_ingestion - INFO - 
+[4/4] Loading Pricing Data...
+2026-01-14 18:30:30,184 - ingestion.load_pricing - INFO - ============================================================
+2026-01-14 18:30:30,184 - ingestion.load_pricing - INFO - Starting Pricing Data Ingestion
+2026-01-14 18:30:30,184 - ingestion.load_pricing - INFO - ============================================================
+2026-01-14 18:30:30,192 - ingestion.load_pricing - INFO - Loading pricing_may_2022 from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\pricing_may_2022.csv
+2026-01-14 18:30:30,345 - ingestion.load_pricing - INFO -   Columns: ['index', 'Sku', 'Style Id', 'Catalog', 'Category', 'Weight', 'TP', 'MRP Old', 'Final MRP Old', 'Ajio MRP', 'Amazon MRP', 'Amazon FBA MRP', 'Flipkart MRP', 'Limeroad MRP', 'Myntra MRP', 'Paytm MRP', 'Snapdeal MRP']
+2026-01-14 18:30:30,392 - ingestion.load_pricing - INFO - Loading pricing_pl_march_2021 from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\pricing_pl_march_2021.csv
+2026-01-14 18:30:30,519 - ingestion.load_pricing - INFO -   Columns: ['index', 'Sku', 'Style Id', 'Catalog', 'Category', 'Weight', 'TP 1', 'TP 2', 'MRP Old', 'Final MRP Old', 'Ajio MRP', 'Amazon MRP', 'Amazon FBA MRP', 'Flipkart MRP', 'Limeroad MRP', 'Myntra MRP', 'Paytm MRP', 'Snapdeal MRP']
+2026-01-14 18:30:30,560 - ingestion.run_all_ingestion - INFO - 
+================================================================================
+2026-01-14 18:30:30,560 - ingestion.run_all_ingestion - INFO - INGESTION COMPLETE - TABLE SUMMARY
+2026-01-14 18:30:30,560 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-14 18:30:30,699 - ingestion.run_all_ingestion - INFO - 
+                     name
+         amazon_sales_raw
+  international_sales_raw
+            inventory_raw
+     pricing_may_2022_raw
+pricing_pl_march_2021_raw
+2026-01-14 18:30:30,699 - ingestion.run_all_ingestion - INFO - 
+Row Counts:
+2026-01-14 18:30:30,706 - ingestion.run_all_ingestion - INFO -   amazon_sales_raw: 128,975 rows
+2026-01-14 18:30:30,708 - ingestion.run_all_ingestion - INFO -   international_sales_raw: 37,432 rows
+2026-01-14 18:30:30,710 - ingestion.run_all_ingestion - INFO -   inventory_raw: 9,271 rows
+2026-01-14 18:30:30,712 - ingestion.run_all_ingestion - INFO -   pricing_may_2022_raw: 1,330 rows
+2026-01-14 18:30:30,717 - ingestion.run_all_ingestion - INFO -   pricing_pl_march_2021_raw: 1,330 rows
+2026-01-14 18:30:30,731 - __main__ - INFO - 
+[Step 2] Creating analytical views...
+2026-01-14 18:30:30,732 - transformations.create_views - INFO - ================================================================================
+2026-01-14 18:30:30,733 - transformations.create_views - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-14 18:30:30,736 - transformations.create_views - INFO - ================================================================================
+2026-01-14 18:30:30,768 - transformations.create_views - INFO - Executing sales_fact_view.sql...
+2026-01-14 18:30:30,796 - transformations.create_views - INFO - Executing product_dim_view.sql...
+2026-01-14 18:30:30,798 - transformations.create_views - INFO - Executing inventory_dim_view.sql...
+2026-01-14 18:30:30,806 - transformations.create_views - INFO - 
+================================================================================
+2026-01-14 18:30:30,806 - transformations.create_views - INFO - VIEW VALIDATION
+2026-01-14 18:30:30,806 - transformations.create_views - INFO - ================================================================================
+2026-01-14 18:30:30,806 - transformations.create_views - INFO - 
+[1] sales_fact_view:
+2026-01-14 18:30:30,826 - transformations.create_views - ERROR - Error creating views: Catalog Error: Table with name sales_fact_view does not exist!
+Did you mean "sqlite_schema"?
+
+LINE 1: SELECT COUNT(*) FROM sales_fact_view
+                             ^
+2026-01-14 18:30:30,839 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 12:06:53,972 - __main__ - INFO - ================================================================================
+2026-01-15 12:06:53,972 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 12:06:53,972 - __main__ - INFO - ================================================================================
+2026-01-15 12:06:53,972 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 12:06:53,979 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 12:06:53,982 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:06:53,984 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 12:06:53,984 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:06:53,984 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 12:06:53,984 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 12:06:53,987 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 12:06:54,976 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 12:06:55,062 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 12:06:55,064 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 12:06:55,069 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 12:06:55,074 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 12:06:55,075 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 12:06:55,075 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 12:06:55,075 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 12:06:55,740 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 12:06:55,994 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 12:32:02,918 - __main__ - INFO - ================================================================================
+2026-01-15 12:32:02,920 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 12:32:02,920 - __main__ - INFO - ================================================================================
+2026-01-15 12:32:02,920 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 12:32:02,928 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 12:32:02,928 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:32:02,928 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 12:32:02,928 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:32:02,928 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 12:32:02,928 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 12:32:02,928 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 12:32:03,900 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 12:32:04,007 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 12:32:04,007 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 12:32:04,007 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 12:32:04,007 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 12:32:04,007 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 12:32:04,007 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 12:32:04,007 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 12:32:04,491 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 12:32:04,736 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 12:32:33,590 - __main__ - INFO - ================================================================================
+2026-01-15 12:32:33,591 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 12:32:33,591 - __main__ - INFO - ================================================================================
+2026-01-15 12:32:33,591 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 12:32:33,600 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 12:32:33,600 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:32:33,601 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 12:32:33,601 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:32:33,601 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 12:32:33,601 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 12:32:33,601 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 12:32:34,675 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 12:32:34,814 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 12:32:34,819 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 12:32:34,825 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 12:32:34,832 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 12:32:34,835 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 12:32:34,837 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 12:32:34,838 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 12:32:34,976 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 12:32:35,094 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 12:35:04,100 - __main__ - INFO - ================================================================================
+2026-01-15 12:35:04,100 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 12:35:04,100 - __main__ - INFO - ================================================================================
+2026-01-15 12:35:04,100 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 12:35:04,137 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 12:35:04,146 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:35:04,151 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 12:35:04,153 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:35:04,163 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 12:35:04,169 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 12:35:04,172 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 12:35:05,225 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 12:35:05,334 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 12:35:05,334 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 12:35:05,339 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 12:35:05,339 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 12:35:05,339 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 12:35:05,339 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 12:35:05,343 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 12:35:05,513 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 12:35:05,572 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 12:40:19,904 - __main__ - INFO - ================================================================================
+2026-01-15 12:40:19,904 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 12:40:19,907 - __main__ - INFO - ================================================================================
+2026-01-15 12:40:19,907 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 12:40:20,015 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 12:40:20,015 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:40:20,018 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 12:40:20,020 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 12:40:20,023 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 12:40:20,023 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 12:40:20,024 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 12:40:21,051 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 12:40:21,152 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 12:40:21,162 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 12:40:21,162 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 12:40:21,162 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 12:40:21,162 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 12:40:21,162 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 12:40:21,162 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 12:40:21,334 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 12:40:21,375 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 14:54:24,153 - __main__ - INFO - ================================================================================
+2026-01-15 14:54:24,153 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 14:54:24,153 - __main__ - INFO - ================================================================================
+2026-01-15 14:54:24,153 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 14:54:24,231 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 14:54:24,233 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 14:54:24,233 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 14:54:24,233 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 14:54:24,233 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 14:54:24,235 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 14:54:24,238 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 14:54:25,318 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 14:54:25,496 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 14:54:25,496 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 14:54:25,496 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 14:54:25,496 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 14:54:25,496 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 14:54:25,496 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 14:54:25,496 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 14:54:26,024 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 14:54:26,416 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 14:59:09,388 - __main__ - INFO - ================================================================================
+2026-01-15 14:59:09,388 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 14:59:09,388 - __main__ - INFO - ================================================================================
+2026-01-15 14:59:09,388 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 14:59:09,409 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 14:59:09,409 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 14:59:09,409 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 14:59:09,410 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 14:59:09,417 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 14:59:09,424 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 14:59:09,424 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 14:59:10,361 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 14:59:10,463 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 14:59:10,463 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 14:59:10,463 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 14:59:10,463 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 14:59:10,463 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 14:59:10,463 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 14:59:10,463 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 14:59:10,604 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 14:59:10,650 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:01:49,570 - __main__ - INFO - ================================================================================
+2026-01-15 15:01:49,571 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:01:49,571 - __main__ - INFO - ================================================================================
+2026-01-15 15:01:49,571 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:01:49,593 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:01:49,596 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:01:49,596 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:01:49,596 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:01:49,597 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:01:49,597 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:01:49,598 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:01:50,537 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:01:50,658 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:01:50,659 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:01:50,660 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:01:50,660 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:01:50,660 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:01:50,660 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:01:50,661 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:01:50,843 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:01:50,973 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:03:18,889 - __main__ - INFO - ================================================================================
+2026-01-15 15:03:18,889 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:03:18,889 - __main__ - INFO - ================================================================================
+2026-01-15 15:03:18,889 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:03:18,924 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:03:18,925 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:03:18,925 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:03:18,925 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:03:18,925 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:03:18,926 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:03:18,926 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:03:19,839 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:03:19,955 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:03:19,955 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:03:19,955 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:03:19,955 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:03:19,955 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:03:19,955 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:03:19,955 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:03:20,226 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:03:20,306 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:04:49,181 - __main__ - INFO - ================================================================================
+2026-01-15 15:04:49,181 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:04:49,181 - __main__ - INFO - ================================================================================
+2026-01-15 15:04:49,181 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:04:49,200 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:04:49,200 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:04:49,200 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:04:49,200 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:04:49,200 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:04:49,204 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:04:49,204 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:04:50,129 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:04:50,258 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:04:50,258 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:04:50,258 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:04:50,258 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:04:50,258 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:04:50,258 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:04:50,258 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:04:50,395 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:04:50,454 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:07:25,679 - __main__ - INFO - ================================================================================
+2026-01-15 15:07:25,679 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:07:25,679 - __main__ - INFO - ================================================================================
+2026-01-15 15:07:25,679 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:07:25,705 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:07:25,708 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:07:25,708 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:07:25,708 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:07:25,708 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:07:25,712 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:07:25,712 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:07:26,609 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:07:26,727 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:07:26,727 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:07:26,727 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:07:26,727 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:07:26,727 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:07:26,727 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:07:26,727 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:07:26,875 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:07:26,928 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:12:46,386 - __main__ - INFO - ================================================================================
+2026-01-15 15:12:46,386 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:12:46,386 - __main__ - INFO - ================================================================================
+2026-01-15 15:12:46,386 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:12:46,414 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:12:46,414 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:12:46,415 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:12:46,416 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:12:46,416 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:12:46,417 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:12:46,417 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:12:47,320 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:12:47,428 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:12:47,428 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:12:47,428 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:12:47,428 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:12:47,428 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:12:47,428 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:12:47,428 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:12:47,568 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:12:47,614 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:16:12,190 - __main__ - INFO - ================================================================================
+2026-01-15 15:16:12,190 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:16:12,190 - __main__ - INFO - ================================================================================
+2026-01-15 15:16:12,190 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:16:12,219 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:16:12,223 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:16:12,224 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:16:12,224 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:16:12,225 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:16:12,225 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:16:12,225 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:16:13,115 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:16:13,326 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:16:13,326 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:16:13,326 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:16:13,326 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:16:13,326 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:16:13,326 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:16:13,326 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:16:13,469 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:16:13,521 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:18:50,841 - __main__ - INFO - ================================================================================
+2026-01-15 15:18:50,841 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:18:50,841 - __main__ - INFO - ================================================================================
+2026-01-15 15:18:50,841 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:18:50,860 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:18:50,862 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:18:50,862 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:18:50,862 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:18:50,862 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:18:50,862 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:18:50,862 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:18:51,843 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:18:51,957 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:18:51,957 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:18:51,957 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:18:51,957 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:18:51,957 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:18:51,957 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:18:51,957 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:18:52,089 - ingestion.load_amazon_sales - ERROR - Error loading Amazon sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:18:52,131 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:20:51,603 - __main__ - INFO - ================================================================================
+2026-01-15 15:20:51,603 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:20:51,603 - __main__ - INFO - ================================================================================
+2026-01-15 15:20:51,603 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:20:51,618 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:20:51,619 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:20:51,620 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:20:51,620 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:20:51,620 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:20:51,620 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:20:51,620 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:20:52,669 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:20:52,774 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:20:52,774 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:20:52,774 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:20:52,774 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:20:52,774 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:20:52,774 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:20:52,774 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:28:15,560 - ingestion.run_all_ingestion - INFO - 
+[2/4] Loading International Sales...
+2026-01-15 15:28:15,562 - ingestion.load_international_sales - INFO - Loading International sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\international_sale_report.csv
+2026-01-15 15:28:15,562 - ingestion.load_international_sales - INFO - Reading CSV file...
+2026-01-15 15:28:15,634 - ingestion.load_international_sales - INFO - Converting data types...
+2026-01-15 15:28:15,775 - ingestion.load_international_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:28:15,777 - ingestion.load_international_sales - INFO -   - Total rows: 37,432
+2026-01-15 15:28:15,777 - ingestion.load_international_sales - INFO -   - Null dates: 18797
+2026-01-15 15:28:15,778 - ingestion.load_international_sales - INFO -   - Null/empty SKUs: 2474
+2026-01-15 15:28:15,779 - ingestion.load_international_sales - INFO -   - Null PCS: 1041
+2026-01-15 15:28:15,779 - ingestion.load_international_sales - INFO -   - Null gross amounts: 1041
+2026-01-15 15:28:15,779 - ingestion.load_international_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:28:15,841 - ingestion.load_international_sales - ERROR - Error loading International sales data: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:28:15,883 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:33:34,161 - __main__ - INFO - ================================================================================
+2026-01-15 15:33:34,161 - __main__ - INFO - PHASE 2: DATA ENGINEERING PIPELINE
+2026-01-15 15:33:34,161 - __main__ - INFO - ================================================================================
+2026-01-15 15:33:34,161 - __main__ - INFO - 
+[Step 0] Verifying raw data files...
+2026-01-15 15:33:34,168 - __main__ - INFO - 
+[Step 1] Running data ingestion...
+2026-01-15 15:33:34,170 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:33:34,171 - ingestion.run_all_ingestion - INFO - PHASE 2: DATA INGESTION - STARTING
+2026-01-15 15:33:34,171 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:33:34,173 - ingestion.run_all_ingestion - INFO - 
+[1/4] Loading Amazon Sales...
+2026-01-15 15:33:34,173 - ingestion.load_amazon_sales - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 15:33:34,173 - ingestion.load_amazon_sales - INFO - Reading CSV file...
+2026-01-15 15:33:35,147 - ingestion.load_amazon_sales - INFO - Converting data types...
+2026-01-15 15:33:35,277 - ingestion.load_amazon_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:33:35,277 - ingestion.load_amazon_sales - INFO -   - Total rows: 128,975
+2026-01-15 15:33:35,277 - ingestion.load_amazon_sales - INFO -   - Null dates: 0
+2026-01-15 15:33:35,277 - ingestion.load_amazon_sales - INFO -   - Null/empty SKUs: 0
+2026-01-15 15:33:35,277 - ingestion.load_amazon_sales - INFO -   - Null amounts: 7795
+2026-01-15 15:33:35,280 - ingestion.load_amazon_sales - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 15:33:35,280 - ingestion.load_amazon_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:40:52,884 - ingestion.run_all_ingestion - INFO - 
+[2/4] Loading International Sales...
+2026-01-15 15:40:52,886 - ingestion.load_international_sales - INFO - Loading International sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\international_sale_report.csv
+2026-01-15 15:40:52,886 - ingestion.load_international_sales - INFO - Reading CSV file...
+2026-01-15 15:40:52,964 - ingestion.load_international_sales - INFO - Converting data types...
+2026-01-15 15:40:53,083 - ingestion.load_international_sales - INFO - Data Quality Check (before load):
+2026-01-15 15:40:53,083 - ingestion.load_international_sales - INFO -   - Total rows: 37,432
+2026-01-15 15:40:53,083 - ingestion.load_international_sales - INFO -   - Null dates: 18797
+2026-01-15 15:40:53,083 - ingestion.load_international_sales - INFO -   - Null/empty SKUs: 2474
+2026-01-15 15:40:53,083 - ingestion.load_international_sales - INFO -   - Null PCS: 1041
+2026-01-15 15:40:53,083 - ingestion.load_international_sales - INFO -   - Null gross amounts: 1041
+2026-01-15 15:40:53,083 - ingestion.load_international_sales - INFO - Loading data into PostgreSQL...
+2026-01-15 15:41:01,320 - ingestion.run_all_ingestion - INFO - 
+[3/4] Loading Inventory...
+2026-01-15 15:41:01,330 - ingestion.load_inventory - INFO - Loading Inventory data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\sale_report_inventory.csv
+2026-01-15 15:41:01,332 - ingestion.load_inventory - INFO - Reading CSV file...
+2026-01-15 15:41:01,351 - ingestion.load_inventory - INFO - Sample columns from inventory CSV: ['index', 'SKU Code', 'Design No.', 'Stock', 'Category', 'Size', 'Color']
+2026-01-15 15:41:01,351 - ingestion.load_inventory - INFO - Total rows in CSV: 9,271
+2026-01-15 15:41:01,355 - ingestion.load_inventory - INFO - Data Quality Check (before load):
+2026-01-15 15:41:01,355 - ingestion.load_inventory - INFO -   - Null/empty SKUs: 83
+2026-01-15 15:41:01,355 - ingestion.load_inventory - INFO -   - Unique SKUs: 9170
+2026-01-15 15:41:01,357 - ingestion.load_inventory - WARNING -   - SKUs are NOT unique (duplicates found)
+2026-01-15 15:41:01,357 - ingestion.load_inventory - INFO - Loading data into PostgreSQL...
+2026-01-15 15:41:05,959 - ingestion.load_inventory - INFO - Inventory table columns: ['index', 'SKU Code', 'Design No.', 'Stock', 'Category', 'Size', 'Color']
+2026-01-15 15:41:05,976 - ingestion.run_all_ingestion - INFO - 
+[4/4] Loading Pricing Data...
+2026-01-15 15:41:05,982 - ingestion.load_pricing - INFO - ============================================================
+2026-01-15 15:41:05,982 - ingestion.load_pricing - INFO - Starting Pricing Data Ingestion
+2026-01-15 15:41:05,982 - ingestion.load_pricing - INFO - ============================================================
+2026-01-15 15:41:05,982 - ingestion.load_pricing - INFO - Loading pricing_may_2022 from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\pricing_may_2022.csv
+2026-01-15 15:41:05,984 - ingestion.load_pricing - INFO -   Total rows in CSV: 1,330
+2026-01-15 15:41:05,984 - ingestion.load_pricing - INFO -   Columns: ['index', 'Sku', 'Style Id', 'Catalog', 'Category', 'Weight', 'TP', 'MRP Old', 'Final MRP Old', 'Ajio MRP', 'Amazon MRP', 'Amazon FBA MRP', 'Flipkart MRP', 'Limeroad MRP', 'Myntra MRP', 'Paytm MRP', 'Snapdeal MRP']
+2026-01-15 15:41:07,788 - ingestion.load_pricing - INFO - Loading pricing_pl_march_2021 from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\pricing_pl_march_2021.csv
+2026-01-15 15:41:07,798 - ingestion.load_pricing - INFO -   Total rows in CSV: 1,330
+2026-01-15 15:41:07,798 - ingestion.load_pricing - INFO -   Columns: ['index', 'Sku', 'Style Id', 'Catalog', 'Category', 'Weight', 'TP 1', 'TP 2', 'MRP Old', 'Final MRP Old', 'Ajio MRP', 'Amazon MRP', 'Amazon FBA MRP', 'Flipkart MRP', 'Limeroad MRP', 'Myntra MRP', 'Paytm MRP', 'Snapdeal MRP']
+2026-01-15 15:41:10,265 - ingestion.run_all_ingestion - INFO - 
+================================================================================
+2026-01-15 15:41:10,266 - ingestion.run_all_ingestion - INFO - INGESTION COMPLETE - TABLE SUMMARY
+2026-01-15 15:41:10,266 - ingestion.run_all_ingestion - INFO - ================================================================================
+2026-01-15 15:41:10,525 - ingestion.run_all_ingestion - INFO - 
+                     name
+         amazon_sales_raw
+  international_sales_raw
+            inventory_raw
+     pricing_may_2022_raw
+pricing_pl_march_2021_raw
+2026-01-15 15:41:10,525 - ingestion.run_all_ingestion - INFO - 
+Row Counts:
+2026-01-15 15:41:10,603 - ingestion.run_all_ingestion - INFO -   amazon_sales_raw: 128,975 rows
+2026-01-15 15:41:10,612 - ingestion.run_all_ingestion - INFO -   international_sales_raw: 37,432 rows
+2026-01-15 15:41:10,618 - ingestion.run_all_ingestion - INFO -   inventory_raw: 9,271 rows
+2026-01-15 15:41:10,620 - ingestion.run_all_ingestion - INFO -   pricing_may_2022_raw: 1,330 rows
+2026-01-15 15:41:10,624 - ingestion.run_all_ingestion - INFO -   pricing_pl_march_2021_raw: 1,330 rows
+2026-01-15 15:41:10,637 - __main__ - INFO - 
+[Step 2] Creating analytical views...
+2026-01-15 15:41:10,637 - transformations.create_views - INFO - ================================================================================
+2026-01-15 15:41:10,638 - transformations.create_views - INFO - PHASE 2: CREATING ANALYTICAL VIEWS
+2026-01-15 15:41:10,638 - transformations.create_views - INFO - ================================================================================
+2026-01-15 15:41:10,639 - transformations.create_views - INFO - Executing sales_fact_view.sql...
+2026-01-15 15:41:10,715 - transformations.create_views - ERROR - Error creating views: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-15 15:41:10,753 - __main__ - ERROR - 
+Check logs in logs/ for details
+2026-01-15 15:52:07,196 - __main__ - INFO - Loading International sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\international_sale_report.csv
+2026-01-15 15:52:07,196 - __main__ - INFO - Reading CSV file...
+2026-01-15 15:52:07,281 - __main__ - INFO - Converting data types...
+2026-01-15 15:52:07,384 - __main__ - INFO - Data Quality Check (before load):
+2026-01-15 15:52:07,384 - __main__ - INFO -   - Total rows: 37,432
+2026-01-15 15:52:07,384 - __main__ - INFO -   - Null dates: 18797
+2026-01-15 15:52:07,384 - __main__ - INFO -   - Null/empty SKUs: 2474
+2026-01-15 15:52:07,384 - __main__ - INFO -   - Null PCS: 1041
+2026-01-15 15:52:07,384 - __main__ - INFO -   - Null gross amounts: 1041
+2026-01-15 15:52:07,384 - __main__ - INFO - Loading data into PostgreSQL...
+2026-01-15 15:52:33,080 - __main__ - INFO - Loading Inventory data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\sale_report_inventory.csv
+2026-01-15 15:52:33,088 - __main__ - INFO - Reading CSV file...
+2026-01-15 15:52:33,104 - __main__ - INFO - Sample columns from inventory CSV: ['index', 'SKU Code', 'Design No.', 'Stock', 'Category', 'Size', 'Color']
+2026-01-15 15:52:33,113 - __main__ - INFO - Total rows in CSV: 9,271
+2026-01-15 15:52:33,121 - __main__ - INFO - Data Quality Check (before load):
+2026-01-15 15:52:33,121 - __main__ - INFO -   - Null/empty SKUs: 83
+2026-01-15 15:52:33,121 - __main__ - INFO -   - Unique SKUs: 9170
+2026-01-15 15:52:33,121 - __main__ - WARNING -   - SKUs are NOT unique (duplicates found)
+2026-01-15 15:52:33,121 - __main__ - INFO - Loading data into PostgreSQL...
+2026-01-15 15:52:37,507 - __main__ - INFO - Inventory table columns: ['index', 'SKU Code', 'Design No.', 'Stock', 'Category', 'Size', 'Color']
+2026-01-15 15:52:48,536 - __main__ - INFO - ============================================================
+2026-01-15 15:52:48,536 - __main__ - INFO - Starting Pricing Data Ingestion
+2026-01-15 15:52:48,536 - __main__ - INFO - ============================================================
+2026-01-15 15:52:48,536 - __main__ - INFO - Loading pricing_may_2022 from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\pricing_may_2022.csv
+2026-01-15 15:52:48,551 - __main__ - INFO -   Total rows in CSV: 1,330
+2026-01-15 15:52:48,551 - __main__ - INFO -   Columns: ['index', 'Sku', 'Style Id', 'Catalog', 'Category', 'Weight', 'TP', 'MRP Old', 'Final MRP Old', 'Ajio MRP', 'Amazon MRP', 'Amazon FBA MRP', 'Flipkart MRP', 'Limeroad MRP', 'Myntra MRP', 'Paytm MRP', 'Snapdeal MRP']
+2026-01-15 15:52:50,229 - __main__ - INFO - Loading pricing_pl_march_2021 from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\pricing_pl_march_2021.csv
+2026-01-15 15:52:50,238 - __main__ - INFO -   Total rows in CSV: 1,330
+2026-01-15 15:52:50,240 - __main__ - INFO -   Columns: ['index', 'Sku', 'Style Id', 'Catalog', 'Category', 'Weight', 'TP 1', 'TP 2', 'MRP Old', 'Final MRP Old', 'Ajio MRP', 'Amazon MRP', 'Amazon FBA MRP', 'Flipkart MRP', 'Limeroad MRP', 'Myntra MRP', 'Paytm MRP', 'Snapdeal MRP']
+2026-01-15 17:59:54,358 - __main__ - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 17:59:54,358 - __main__ - INFO - Reading CSV file...
+2026-01-15 17:59:55,299 - __main__ - INFO - Converting data types...
+2026-01-15 17:59:55,434 - __main__ - INFO - Data Quality Check (before load):
+2026-01-15 17:59:55,434 - __main__ - INFO -   - Total rows: 128,975
+2026-01-15 17:59:55,434 - __main__ - INFO -   - Null dates: 0
+2026-01-15 17:59:55,434 - __main__ - INFO -   - Null/empty SKUs: 0
+2026-01-15 17:59:55,434 - __main__ - INFO -   - Null amounts: 7795
+2026-01-15 17:59:55,436 - __main__ - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 17:59:55,436 - __main__ - INFO - Loading data into PostgreSQL...
+2026-01-15 18:15:09,969 - __main__ - INFO - Loading Amazon sales data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\amazon_sale_report.csv
+2026-01-15 18:15:09,970 - __main__ - INFO - Reading CSV file...
+2026-01-15 18:15:10,950 - __main__ - INFO - Normalized columns: ['index', 'order_id', 'date', 'status', 'fulfilment', 'sales_channel', 'ship_service_level', 'style', 'sku', 'category', 'size', 'asin', 'courier_status', 'qty', 'currency', 'amount', 'ship_city', 'ship_state', 'ship_postal_code', 'ship_country', 'promotion_ids', 'b2b', 'fulfilled_by', 'unnamed:_22']
+2026-01-15 18:15:10,950 - __main__ - INFO - Converting data types...
+2026-01-15 18:15:11,061 - __main__ - INFO - Data Quality Check (before load):
+2026-01-15 18:15:11,061 - __main__ - INFO -   - Total rows: 128,975
+2026-01-15 18:15:11,061 - __main__ - INFO -   - Null dates: 0
+2026-01-15 18:15:11,061 - __main__ - INFO -   - Null/empty SKUs: 0
+2026-01-15 18:15:11,064 - __main__ - INFO -   - Null amounts: 7795
+2026-01-15 18:15:11,064 - __main__ - INFO -   - Cancelled orders (will be filtered in views): 18332
+2026-01-15 18:15:11,064 - __main__ - INFO - Loading data into PostgreSQL...
+2026-01-15 18:41:28,683 - __main__ - INFO - Loading Inventory data from C:\Users\chakri\Downloads\Code\retail-insights-assistant\data\raw\sale_report_inventory.csv
+2026-01-15 18:41:28,683 - __main__ - INFO - Reading CSV file...
+2026-01-15 18:41:28,713 - __main__ - INFO - Normalized columns: ['index', 'sku_code', 'design_no.', 'stock', 'category', 'size', 'color']
+2026-01-15 18:41:28,713 - __main__ - INFO - Total rows in CSV: 9,271
+2026-01-15 18:41:28,723 - __main__ - INFO - Data Quality Check (before load):
+2026-01-15 18:41:28,726 - __main__ - INFO -   - Null/empty SKUs: 83
+2026-01-15 18:41:28,727 - __main__ - INFO -   - Unique SKUs: 9170
+2026-01-15 18:41:28,727 - __main__ - WARNING -   - SKUs are NOT unique (duplicates found)
+2026-01-15 18:41:28,727 - __main__ - INFO - Loading data into PostgreSQL...
+2026-01-15 18:41:30,870 - __main__ - INFO - Inventory table columns: ['index', 'sku_code', 'design_no.', 'stock', 'category', 'size', 'color']
