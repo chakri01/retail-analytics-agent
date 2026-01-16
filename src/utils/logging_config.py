@@ -50,7 +50,7 @@ def setup_phase3_logging():
     
     return loggers
 
-class Phase3Logger:
+class agentLogger:
     """Logger for Phase 3 activities"""
     
     def __init__(self):

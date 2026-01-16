@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 .venv/
 __pypackages__/
+logs/*.log

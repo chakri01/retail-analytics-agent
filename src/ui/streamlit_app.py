@@ -1,5 +1,5 @@
 """
-Streamlit UI for Retail Insights Assistant - Fixed version
+Streamlit UI for Retail Insights Assistant - Optimized Summary Mode
 """
 import streamlit as st
 import pandas as pd
@@ -8,6 +8,7 @@ import plotly.express as px
 from datetime import datetime
 import sys
 import os
+from io import BytesIO
 
 # Fix import paths - Add project root to Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -69,22 +70,115 @@ def init_session_state():
     if 'conversation' not in st.session_state:
         st.session_state.conversation = []
     if 'current_dataset' not in st.session_state:
-        st.session_state.current_dataset = "amazon_sales"
+        st.session_state.current_dataset = "auto"
     if 'mode' not in st.session_state:
         st.session_state.mode = "q&a"
-    if 'summary_data' not in st.session_state:
-        st.session_state.summary_data = None
     if 'show_details' not in st.session_state:
         st.session_state.show_details = {}
     if 'show_sql' not in st.session_state:
         st.session_state.show_sql = {}
     if 'show_chart' not in st.session_state:
         st.session_state.show_chart = {}
+    # Pre-generated summary files (generated once)
+    if 'summary_files_generated' not in st.session_state:
+        st.session_state.summary_files_generated = False
+    if 'summary_files' not in st.session_state:
+        st.session_state.summary_files = {}
 
 init_session_state()
 
 # Initialize metadata catalog
 metadata_catalog = MetadataCatalog()
+
+# Pre-generate summary files (doesn't make database calls)
+def generate_summary_files():
+    """Generate summary files from metadata (NO database queries)"""
+    try:
+        all_views = metadata_catalog.get_all_views()
+        
+        # 1. JSON Summary
+        json_summary = {
+            "generated_at": datetime.now().isoformat(),
+            "total_views": len(all_views),
+            "views": []
+        }
+        
+        for view in all_views:
+            view_info = metadata_catalog.get_view_info(view)
+            json_summary["views"].append({
+                "name": view,
+                "description": view_info.get('description', 'No description'),
+                "column_count": len(view_info.get('columns', {})),
+                "primary_key": view_info.get('primary_key', 'Not specified'),
+                "columns": list(view_info.get('columns', {}).keys()),
+                "relationships": view_info.get('relationships', [])
+            })
+        
+        # 2. Text Report
+        text_report = f"""RETAIL DATASET CATALOG SUMMARY
+Generated: {json_summary['generated_at']}
+==============================================
+
+OVERVIEW
+--------
+Total Views: {json_summary['total_views']}
+Primary Join Key: sku (all views)
+
+DETAILED VIEW INFORMATION
+-------------------------
+"""
+        
+        for view in json_summary["views"]:
+            text_report += f"""
+View: {view['name']}
+Description: {view['description']}
+Columns: {view['column_count']}
+Primary Key: {view['primary_key']}
+
+Columns: {', '.join(view['columns'][:10])}{'...' if len(view['columns']) > 10 else ''}
+{'-' * 50}
+"""
+        
+        text_report += f"""
+CROSS-VIEW RELATIONSHIPS
+------------------------
+All views can be joined using the 'sku' column for comprehensive analysis.
+
+AVAILABLE METRICS
+-----------------
+• Total sales amount
+• Units sold (quantity)
+• Order count
+• Current stock levels
+• Stock status indicators
+• Product category distribution
+"""
+        
+        # 3. CSV Data (just view metadata)
+        csv_data = []
+        for view in json_summary["views"]:
+            csv_data.append({
+                "view_name": view["name"],
+                "description": view["description"],
+                "column_count": view["column_count"],
+                "primary_key": view["primary_key"],
+                "sample_columns": ", ".join(view["columns"][:5])
+            })
+        csv_df = pd.DataFrame(csv_data)
+        
+        # Store in session state
+        st.session_state.summary_files = {
+            "json": json.dumps(json_summary, indent=2),
+            "txt": text_report,
+            "csv": csv_df.to_csv(index=False)
+        }
+        st.session_state.summary_files_generated = True
+        
+        return True
+        
+    except Exception as e:
+        st.error(f"Error generating summary files: {str(e)}")
+        return False
 
 # Sidebar
 with st.sidebar:
@@ -107,54 +201,35 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # Dataset selector
-    st.subheader("🗂️ Dataset")
-    datasets = metadata_catalog.get_all_datasets()
-    selected_dataset = st.selectbox(
-        "Select dataset:",
-        datasets,
-        index=datasets.index(st.session_state.current_dataset) if st.session_state.current_dataset in datasets else 0,
-        help="Choose which dataset to query"
-    )
+    # Data catalog info
+    st.subheader("🗂️ Data Catalog")
+    st.info("💡 System automatically detects which datasets to use for your queries.")
     
-    st.session_state.current_dataset = selected_dataset
+    # Show available views
+    with st.expander("📊 Available Data Views"):
+        for view_name in metadata_catalog.get_all_views():
+            view_info = metadata_catalog.get_view_info(view_name)
+            st.write(f"**{view_name}**: {view_info.get('description', 'No description')}")
     
-    # Show dataset info
-    dataset_info = metadata_catalog.get_dataset_info(selected_dataset)
-    with st.expander("📝 Dataset Info", expanded=True):
-        st.caption(f"**Description**: {dataset_info.get('description', 'No description')}")
-        
-        metrics = dataset_info.get('metrics', [])
-        if metrics:
-            st.caption("**Metrics**:")
-            for metric in metrics[:3]:  # Show first 3
-                st.caption(f"  • {metric['name']}: {metric['description']}")
-            if len(metrics) > 3:
-                st.caption(f"  • ... and {len(metrics) - 3} more")
-        
-        dimensions = dataset_info.get('dimensions', [])
-        if dimensions:
-            st.caption("**Dimensions**:")
-            for dim in dimensions[:3]:  # Show first 3
-                st.caption(f"  • {dim['name']}: {dim['description']}")
-            if len(dimensions) > 3:
-                st.caption(f"  • ... and {len(dimensions) - 3} more")
-    
-    st.markdown("---")
-    
-    # Summary mode controls
+    # Summary mode controls in sidebar
     if st.session_state.mode == "summary":
-        st.subheader("📈 Summary Options")
-        if st.button("🔄 Generate Summary", use_container_width=True):
-            with st.spinner("Generating summary..."):
-                st.session_state.summary_data = st.session_state.orchestrator.get_summary(selected_dataset)
+        st.subheader("📈 Export Summary")
+        
+        # One-time generation button
+        if not st.session_state.summary_files_generated:
+            if st.button("📥 Generate Export Files", type="primary", use_container_width=True):
+                with st.spinner("Creating export files..."):
+                    if generate_summary_files():
+                        st.success("✅ Export files ready!")
+                        st.rerun()
+        else:
+            st.success("✅ Export files ready for download!")
     
     st.markdown("---")
     
     # Clear conversation button
     if st.button("🗑️ Clear Conversation", use_container_width=True):
         st.session_state.conversation = []
-        st.session_state.summary_data = None
         st.session_state.show_details = {}
         st.session_state.show_sql = {}
         st.session_state.show_chart = {}
@@ -166,7 +241,7 @@ with st.sidebar:
     st.caption("🔧 **System Status**")
     st.caption("✅ Database: Connected")
     st.caption("🤖 Agents: Ready")
-    st.caption(f"📊 Data: {selected_dataset} selected")
+    st.caption(f"📊 Views: {len(metadata_catalog.get_all_views())}")
 
 # Main content area
 st.markdown('<h1 class="main-header">📊 Retail Insights Assistant</h1>', unsafe_allow_html=True)
@@ -208,7 +283,7 @@ if st.session_state.mode == "q&a":
                             st.code(message["sql"], language="sql")
     
     # Chat input
-    user_query = st.chat_input(f"Ask about {st.session_state.current_dataset}...")
+    user_query = st.chat_input("Ask any business question about sales, inventory, or products...", key="query_input")
     
     if user_query:
         # Add user message to conversation
@@ -224,10 +299,7 @@ if st.session_state.mode == "q&a":
         # Process query
         with st.chat_message("assistant"):
             with st.spinner("🔍 Analyzing intent..."):
-                result = st.session_state.orchestrator.process_query(
-                    user_query, 
-                    st.session_state.current_dataset
-                )
+                result = st.session_state.orchestrator.process_query(user_query)
             
             if result["success"]:
                 # Display narration
@@ -331,42 +403,113 @@ if st.session_state.mode == "q&a":
 
 # Summary Mode
 else:
-    st.markdown("### 📊 Dataset Summary")
+    st.markdown("### 📊 Dataset Catalog Summary")
     
-    if st.session_state.summary_data:
-        summary = st.session_state.summary_data
+    if st.session_state.summary_files_generated:
+        # Show available exports
+        st.success("✅ Export files are ready for download!")
         
-        st.success(f"Generated summary for **{summary['dataset']}** with {summary['total_queries']} insights")
+        # Export options
+        st.subheader("📤 Download Summary Files")
         
-        for i, item in enumerate(summary["summary_items"], 1):
-            with st.container():
-                col1, col2 = st.columns([4, 1])
-                with col1:
-                    st.markdown(f"**{i}. {item['query']}**")
-                with col2:
-                    st.metric("Rows", item.get("row_count", 0))
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            # JSON Export
+            st.download_button(
+                label="💾 Download JSON",
+                data=st.session_state.summary_files["json"],
+                file_name=f"dataset_catalog_{datetime.now().strftime('%Y%m%d')}.json",
+                mime="application/json",
+                use_container_width=True,
+                type="primary"
+            )
+        
+        with col2:
+            # Text Report Export
+            st.download_button(
+                label="📝 Download Text Report",
+                data=st.session_state.summary_files["txt"],
+                file_name=f"dataset_catalog_{datetime.now().strftime('%Y%m%d')}.txt",
+                mime="text/plain",
+                use_container_width=True,
+                type="primary"
+            )
+        
+        with col3:
+            # CSV Export
+            st.download_button(
+                label="📊 Download CSV",
+                data=st.session_state.summary_files["csv"],
+                file_name=f"dataset_catalog_{datetime.now().strftime('%Y%m%d')}.csv",
+                mime="text/csv",
+                use_container_width=True,
+                type="primary"
+            )
+        
+        # Preview of what's included
+        st.markdown("---")
+        st.subheader("📋 Preview of Included Data")
+        
+        # Show quick stats
+        try:
+            summary_data = json.loads(st.session_state.summary_files["json"])
+            
+            stats_col1, stats_col2, stats_col3 = st.columns(3)
+            with stats_col1:
+                st.metric("Total Views", summary_data["total_views"])
+            with stats_col2:
+                total_columns = sum(v["column_count"] for v in summary_data["views"])
+                st.metric("Total Columns", total_columns)
+            with stats_col3:
+                st.metric("Generated", datetime.fromisoformat(summary_data["generated_at"]).strftime("%H:%M"))
+            
+            # Show first 3 views as preview
+            st.markdown("**Sample Views:**")
+            for view in summary_data["views"][:3]:
+                with st.expander(f"**{view['name']}** - {view['description']}"):
+                    st.markdown(f"**Columns:** {view['column_count']}")
+                    st.markdown(f"**Primary Key:** `{view['primary_key']}`")
+                    st.markdown(f"**Sample Columns:** {', '.join(view['columns'][:5])}")
+            
+            if len(summary_data["views"]) > 3:
+                st.info(f"... and {len(summary_data['views']) - 3} more views")
                 
-                st.markdown(f'<div class="insight-box">{item["narration"]}</div>', unsafe_allow_html=True)
-                st.markdown("---")
+        except:
+            st.info("Click the download buttons to get the complete dataset catalog.")
+        
     else:
-        st.info("👈 Select a dataset and click 'Generate Summary' in the sidebar to get started.")
+        # Initial state - prompt to generate summary
+        st.info("👈 Click 'Generate Export Files' in the sidebar to create summary files")
         
-        # Show sample questions
-        st.markdown("### 💡 Try these questions in Q&A mode:")
+        # Show what will be included
+        st.markdown("### 📋 What will be included:")
         
-        sample_questions = [
-            "What are total sales by category?",
-            "Which country has the highest sales?",
-            "Show me top 10 products by sales",
-            "What is the monthly sales trend?",
-            "How much inventory is low stock?"
-        ]
+        preview_col1, preview_col2 = st.columns(2)
         
-        for question in sample_questions:
-            if st.button(f"❓ {question}", key=f"sample_{question}", use_container_width=True):
-                st.session_state.mode = "q&a"
-                st.session_state.conversation = []  # Clear conversation
-                st.rerun()
+        with preview_col1:
+            st.markdown("**JSON Export:**")
+            st.markdown("• Complete metadata structure")
+            st.markdown("• View descriptions and schemas")
+            st.markdown("• Column lists and counts")
+            st.markdown("• Primary keys and relationships")
+        
+        with preview_col2:
+            st.markdown("**Text & CSV Exports:**")
+            st.markdown("• Formatted text report")
+            st.markdown("• CSV with view metadata")
+            st.markdown("• Ready for documentation")
+            st.markdown("• No database queries needed")
+        
+        # Show available views
+        st.markdown("### 📊 Available Views:")
+        all_views = metadata_catalog.get_all_views()
+        for view_name in all_views[:5]:  # Show first 5
+            view_info = metadata_catalog.get_view_info(view_name)
+            st.markdown(f"**{view_name}**: {view_info.get('description', 'No description')}")
+        
+        if len(all_views) > 5:
+            st.info(f"... and {len(all_views) - 5} more views")
 
 # Footer
 st.markdown("---")

@@ -1,130 +1,153 @@
 """
-Dataset metadata catalog for FAISS indexing
+Unified metadata catalog for cross-dataset queries
 """
 from typing import List, Dict, Any
 import json
 
 class MetadataCatalog:
-    """Catalog of datasets, metrics, and column descriptions"""
+    """Catalog of all datasets with relationships"""
     
     def __init__(self):
-        self.datasets = {
-            "amazon_sales": {
-                "description": "Amazon sales transactions with product and regional data",
-                "source_view": "sales_fact_view",
-                "metrics": [
-                    {"name": "sales_amount", "description": "Total sales revenue", "sql": "SUM(amount)"},
-                    {"name": "units_sold", "description": "Number of units sold", "sql": "SUM(qty)"},
-                    {"name": "order_count", "description": "Number of orders", "sql": "COUNT(DISTINCT order_id)"},
-                    {"name": "avg_order_value", "description": "Average order value", "sql": "AVG(amount)"}
+        self.views = {
+            "sales_fact_view": {
+                "description": "Unified sales transactions across all channels and regions",
+                "columns": {
+                    "order_id": "Unique order identifier",
+                    "order_date": "Date of the order",
+                    "sku": "Stock Keeping Unit (joins to product_dim_view)",
+                    "category": "Product category",
+                    "size": "Product size",
+                    "style": "Product style/name",
+                    "qty": "Quantity sold",
+                    "amount": "Sales amount",
+                    "channel": "Sales channel (Amazon, International)",
+                    "country": "Country code",
+                    "state": "State/region",
+                    "city": "City",
+                    "currency": "Currency",
+                    "fulfilment": "Fulfilment method",
+                    "year": "Year derived from order_date",
+                    "month": "Month derived from order_date",
+                    "quarter": "Quarter derived from order_date",
+                    "month_name": "Month name"
+                },
+                "relationships": [
+                    {"view": "product_dim_view", "on": "sku"},
+                    {"view": "inventory_dim_view", "on": "sku"}
                 ],
-                "dimensions": [
-                    {"name": "category", "description": "Product category", "sql": "category"},
-                    {"name": "country", "description": "Country code (IN, US, etc.)", "sql": "country"},
-                    {"name": "region", "description": "State/region", "sql": "state"},
-                    {"name": "month", "description": "Month number", "sql": "month"},
-                    {"name": "year", "description": "Year", "sql": "year"},
-                    {"name": "product_name", "description": "Product style/name", "sql": "style"},
-                    {"name": "channel", "description": "Sales channel", "sql": "channel"},
-                    {"name": "fulfilment", "description": "Fulfilment method", "sql": "fulfilment"}
-                ],
-                "date_column": "order_date",
-                "text_columns": ["category", "country", "state", "city", "style"]
+                "primary_key": "order_id",
+                "foreign_keys": ["sku"]
             },
-            "inventory": {
+            "product_dim_view": {
+                "description": "Master product catalog with all SKUs",
+                "columns": {
+                    "sku": "Stock Keeping Unit (joins to sales_fact_view and inventory_dim_view)",
+                    "category": "Product category",
+                    "size": "Product size",
+                    "style": "Product style/name",
+                    "asin": "Amazon Standard Identification Number",
+                    "data_sources": "Sources of product data (Inventory, Amazon, International)",
+                    "category_clean": "Cleaned category name",
+                    "product_type": "Type of product"
+                },
+                "relationships": [
+                    {"view": "sales_fact_view", "on": "sku"},
+                    {"view": "inventory_dim_view", "on": "sku"}
+                ],
+                "primary_key": "sku"
+            },
+            "inventory_dim_view": {
                 "description": "Current inventory levels and stock status",
-                "source_view": "inventory_dim_view",
-                "metrics": [
-                    {"name": "current_stock", "description": "Total units in stock", "sql": "SUM(stock)"},
-                    {"name": "low_stock_count", "description": "Number of low stock items", "sql": "SUM(CASE WHEN stock_status = 'Low Stock' THEN 1 ELSE 0 END)"},
-                    {"name": "out_of_stock_count", "description": "Number of out of stock items", "sql": "SUM(is_out_of_stock)"},
-                    {"name": "total_products", "description": "Total number of products", "sql": "COUNT(*)"}
+                "columns": {
+                    "sku": "Stock Keeping Unit (joins to sales_fact_view and product_dim_view)",
+                    "category": "Product category",
+                    "size": "Product size",
+                    "stock": "Current stock quantity",
+                    "stock_status": "Stock status (Out of Stock, Low Stock, etc.)",
+                    "is_out_of_stock": "Binary flag for out of stock items",
+                    "category_clean": "Cleaned category name"
+                },
+                "relationships": [
+                    {"view": "sales_fact_view", "on": "sku"},
+                    {"view": "product_dim_view", "on": "sku"}
                 ],
-                "dimensions": [
-                    {"name": "category_clean", "description": "Product category", "sql": "category_clean"},
-                    {"name": "size", "description": "Product size", "sql": "size"},
-                    {"name": "stock_status", "description": "Stock status", "sql": "stock_status"}
-                ],
-                "text_columns": ["category_clean", "size", "stock_status"]
-            },
-            "products": {
-                "description": "Product catalog with SKUs and categories",
-                "source_view": "product_dim_view",
-                "metrics": [
-                    {"name": "product_count", "description": "Number of products", "sql": "COUNT(*)"},
-                    {"name": "amazon_products", "description": "Products on Amazon", "sql": "SUM(CASE WHEN data_sources LIKE '%Amazon%' THEN 1 ELSE 0 END)"}
-                ],
-                "dimensions": [
-                    {"name": "category_clean", "description": "Product category", "sql": "category_clean"},
-                    {"name": "size", "description": "Product size", "sql": "size"},
-                    {"name": "product_type", "description": "Type of product", "sql": "product_type"}
-                ]
+                "primary_key": "sku"
             }
         }
         
-        # Create text chunks for FAISS indexing
+        # Create unified metrics (can span multiple views)
+        self.unified_metrics = {
+            "sales_performance": {
+                "description": "Sales metrics across all channels",
+                "calculation": "sales_fact_view.amount",
+                "aggregations": ["SUM", "AVG", "COUNT", "MIN", "MAX"],
+                "related_views": ["sales_fact_view"]
+            },
+            "inventory_turnover": {
+                "description": "Inventory turnover ratio",
+                "calculation": "sales_fact_view.qty / inventory_dim_view.stock",
+                "aggregations": ["AVG", "SUM"],
+                "related_views": ["sales_fact_view", "inventory_dim_view"]
+            },
+            "product_performance": {
+                "description": "Product-level performance metrics",
+                "calculation": "Multiple metrics",
+                "aggregations": ["SUM", "COUNT"],
+                "related_views": ["sales_fact_view", "product_dim_view"]
+            }
+        }
+        
+        # Common business questions
+        self.common_queries = [
+            "Which category has the highest sales?",
+            "What are the top 10 products by sales?",
+            "Which products are low in stock but high in sales?",
+            "Compare sales performance across countries",
+            "What is the monthly sales trend?",
+            "Which products are out of stock?",
+            "What is the average order value by category?",
+            "Which region has the highest sales growth?"
+        ]
+        
+        # Create text chunks for FAISS
         self.text_chunks = self._create_text_chunks()
     
     def _create_text_chunks(self) -> List[str]:
         """Convert metadata to text chunks for FAISS"""
         chunks = []
         
-        for dataset_name, info in self.datasets.items():
-            # Dataset description chunk
-            chunks.append(f"Dataset: {dataset_name}. {info['description']}. Source view: {info['source_view']}")
+        # View descriptions
+        for view_name, info in self.views.items():
+            chunks.append(f"View: {view_name}. {info['description']}")
+            chunks.append(f"{view_name} has columns: {', '.join(info['columns'].keys())}")
             
-            # Metrics chunk
-            metrics_text = ", ".join([m['name'] for m in info['metrics']])
-            chunks.append(f"{dataset_name} metrics include: {metrics_text}")
-            
-            # Dimensions chunk
-            dims_text = ", ".join([d['name'] for d in info['dimensions']])
-            chunks.append(f"{dataset_name} dimensions include: {dims_text}")
-            
-            # Individual metric descriptions
-            for metric in info['metrics']:
-                chunks.append(f"Metric '{metric['name']}' in {dataset_name}: {metric['description']}. SQL: {metric.get('sql', 'N/A')}")
-            
-            # Individual dimension descriptions
-            for dim in info['dimensions']:
-                chunks.append(f"Dimension '{dim['name']}' in {dataset_name}: {dim['description']}")
+            # Add column descriptions
+            for col_name, col_desc in info['columns'].items():
+                chunks.append(f"Column {col_name} in {view_name}: {col_desc}")
         
-        # Add common queries
-        chunks.append("Common queries: total sales by category, top products, inventory status, sales by country")
-        chunks.append("Filter examples: by country (IN, US), by category (Electronics, Clothing), by date range")
+        # Relationships
+        chunks.append("Views are related by: sales_fact_view.sku = product_dim_view.sku = inventory_dim_view.sku")
+        chunks.append("You can join sales data with product info using the SKU column")
+        chunks.append("You can join sales data with inventory using the SKU column")
+        
+        # Metrics
+        for metric_name, info in self.unified_metrics.items():
+            chunks.append(f"Metric {metric_name}: {info['description']}. Uses views: {', '.join(info['related_views'])}")
+        
+        # Common queries
+        chunks.append("Common business questions: " + "; ".join(self.common_queries))
         
         return chunks
     
-    def get_dataset_info(self, dataset_name: str) -> Dict[str, Any]:
-        """Get metadata for a specific dataset"""
-        return self.datasets.get(dataset_name, {})
+    def get_view_info(self, view_name: str) -> Dict[str, Any]:
+        """Get metadata for a specific view"""
+        return self.views.get(view_name, {})
     
-    def get_all_datasets(self) -> List[str]:
-        """Get list of all dataset names"""
-        return list(self.datasets.keys())
+    def get_all_views(self) -> List[str]:
+        """Get list of all view names"""
+        return list(self.views.keys())
     
-    def get_metric_sql(self, dataset_name: str, metric_name: str) -> str:
-        """Get SQL expression for a metric"""
-        dataset = self.get_dataset_info(dataset_name)
-        for metric in dataset.get('metrics', []):
-            if metric['name'] == metric_name:
-                return metric.get('sql', metric_name)
-        return metric_name
-    
-    def get_dimension_sql(self, dataset_name: str, dimension_name: str) -> str:
-        """Get SQL expression for a dimension"""
-        dataset = self.get_dataset_info(dataset_name)
-        for dimension in dataset.get('dimensions', []):
-            if dimension['name'] == dimension_name:
-                return dimension.get('sql', dimension_name)
-        return dimension_name
-    
-    def is_valid_metric(self, dataset_name: str, metric_name: str) -> bool:
-        """Check if metric exists in dataset"""
-        dataset = self.get_dataset_info(dataset_name)
-        return any(m['name'] == metric_name for m in dataset.get('metrics', []))
-    
-    def is_valid_dimension(self, dataset_name: str, dimension_name: str) -> bool:
-        """Check if dimension exists in dataset"""
-        dataset = self.get_dataset_info(dataset_name)
-        return any(d['name'] == dimension_name for d in dataset.get('dimensions', []))
+    def get_related_views(self, view_name: str) -> List[str]:
+        """Get views related to this view"""
+        info = self.get_view_info(view_name)
+        return [rel["view"] for rel in info.get("relationships", [])]

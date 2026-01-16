@@ -26,27 +26,32 @@ try:
 except Exception as e:
     print(f"❌ Database error: {e}")
 
-# Test Gemini client
+# Test OpenAI client - FIXED
 try:
-    from src.llm.gemini_client import GeminiClient
-    client = GeminiClient()
-    print("✅ Gemini client initialized")
+    from src.llm.openai_client import OpenAIClient  # uppercase 'O'
+    client = OpenAIClient()  # uppercase 'O'
+    print("✅ OpenAI client initialized")
     
     # Simple test
     test_prompt = "What is 2+2?"
     response = client.generate(test_prompt)
     print(f"✅ LLM test: {response[:50]}...")
 except Exception as e:
-    print(f"❌ Gemini error: {e}")
+    print(f"❌ OpenAI error: {e}")
+    import traceback
+    traceback.print_exc()
 
-# Test metadata catalog
+# Test metadata catalog - FIXED
 try:
     from src.vector_db.metadata_catalog import MetadataCatalog
     catalog = MetadataCatalog()
-    datasets = catalog.get_all_datasets()
-    print(f"✅ Metadata catalog loaded. Datasets: {datasets}")
+    # FIX: Changed from get_all_datasets() to get_all_views()
+    views = catalog.get_all_views()  # ← CORRECT METHOD NAME
+    print(f"✅ Metadata catalog loaded. Views: {views}")
 except Exception as e:
     print(f"❌ Metadata catalog error: {e}")
+    import traceback
+    traceback.print_exc()
 
 # Test agents (without FAISS)
 try:
