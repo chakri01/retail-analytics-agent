@@ -19,7 +19,7 @@ The system follows a layered, scalable architecture:
 - **GenAI Layer**: Multi-agent architecture with validation guardrails  
 - **Serving Layer**: Streamlit conversational UI  
 
-📄 **Architecture Presentation (Mandatory)**  
+📄 **Architecture**  
 `retail_insights_assistant_architecture.pdf`
 
 Covers:
@@ -34,10 +34,10 @@ Covers:
 ## 🤖 Multi-Agent GenAI Design
 
 **Agents**
-1. **Intent Resolver Agent (LLM)** – Natural language → structured JSON intent  
-2. **Data Query Agent (No LLM)** – SQL templates → PostgreSQL execution  
+1. **Intent Resolver Agent** – Natural language → structured JSON intent  
+2. **Data Query Agent** – SQL templates → PostgreSQL execution  
 3. **Validation Agent** – Metric, dimension, and result sanity checks  
-4. **Insight Narrator Agent (LLM)** – Numbers → business-friendly insights  
+4. **Insight Narrator Agent** – Numbers → business-friendly insights  
 
 **Critical Rule**  
 LLMs never access raw tables. All analytics run exclusively on governed SQL views.
@@ -54,7 +54,7 @@ LLMs never access raw tables. All analytics run exclusively on governed SQL view
 
 ---
 
-## 📈 Scalability Design (100GB+ Retail Data)
+## 📈 Scalability Design
 
 - Batch ingestion via PySpark / Databricks Jobs  
 - Streaming ingestion via Kafka / Event Hub  
@@ -92,7 +92,7 @@ Screenshots below demonstrate the working chatbot, example Q&A interactions, and
 
 ---
 
-## 🚀 Setup & Execution (End-to-End)
+## 🚀 Setup & Execution
 
 Follow the steps below **in order** to run the system on sample retail CSV data.
 
